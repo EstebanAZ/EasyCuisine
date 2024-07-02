@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/recipes.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="header">
+  <div class="sides">
+    <a href="/" class="logo">EasyCuisine</a>
+  </div>
+  <div class="sides">
+    <a href="#" class="menu"> </a>
+  </div>
+  <div class="info">
+    <h4><a href="#category">Recipes</a></h4>
+    <h1>Welcome to EasyCuisine</h1>
+    <div class="meta">
+      <a href="#" class="author"></a><br>
+      {% if app.user %}
+        Hello, {{ app.user.name }}!
+      {% else %}
+        Hello, Guest!
+      {% endif %}
+    </div>
+  </div>
+  {% if is_granted('ROLE_ADMIN') %}
+    <nav class="navbar">
+        <ul class="navbar__list">
+            <li class="navbar__item"><a href="{{ path('app_recipe_index') }}">Recipes</a></li>
+            <li class="navbar__item"><a href="{{ path('app_user_index') }}">Users</a></li>
+            <li class="navbar__item"><a href="{{ path('app_ingredient_index') }}">Ingredients</a></li>
+        </ul>
+    </nav>
+  {% endif %}
+</div>
+
+<section class="recipe-section">
+    <div>
+      <h1 class="section-title" id="category">List of recipes:</h1>
+    </div>
+    <div class="container">
+        {% for recipe in recipes %}
+        <div class="card">
+            {% if recipe.images is not empty %}
+                <img src="{{ recipe.images[0] }}" alt="Recipe Image" class="card__image">
+            {% else %}
+                <img src="{{ asset('images/no-image.png') }}" alt="No Image Available" class="card__image card__image--placeholder">
+            {% endif %}
+            <div class="card__content">
+                <h2 class="card__title">{{ recipe.title }}</h2>
+                <p class="card__ingredients">Ingredients: 
+                    {% for ingredient in recipe.ingredients %}
+                        {{ ingredient.name }} ({{ ingredient.quantity }}){% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p class="card__author">By {{ recipe.author.name }}</p>
+            </div>
+        </div>
+        {% else %}
+        <p>No recipes found</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

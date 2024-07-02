@@ -18,14 +18,15 @@ security:
       lazy: true
       provider: app_user_provider
       form_login:
-        login_path: app_login
+        login_path: /login
         check_path: app_login
-        default_target_path: app_homepage
+        default_target_path: /
         enable_csrf: true # Use enable_csrf instead of csrf_token_generator
 
       logout:
-        path: app_logout
-        target: app_login
+        path: /logout
+        # where to redirect after logout
+        # target: app_any_route
 
   access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }

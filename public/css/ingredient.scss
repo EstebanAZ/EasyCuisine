@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+
+  thead {
+    background: #007bff;
+    color: #fff;
+
+    th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 500;
+      border-bottom: 2px solid #dee2e6;
+    }
+  }
+
+  tbody {
+    tr {
+      &:nth-child(even) {
+        background: #f2f2f2;
+      }
+
+      td {
+        padding: 15px;
+        border-bottom: 1px solid #dee2e6;
+
+        &:first-child {
+          border-left: 2px solid #dee2e6;
+        }
+
+        &:last-child {
+          border-right: 2px solid #dee2e6;
+        }
+
+        .btn-container {
+          display: flex;
+          gap: 10px;
+
+          .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: background 0.3s ease, transform 0.2s;
+
+            &.btn-primary {
+              background: #007bff;
+
+              &:hover {
+                background: #0056b3;
+              }
+            }
+
+            &.btn-info {
+              background: #17a2b8;
+
+              &:hover {
+                background: #117a8b;
+              }
+            }
+
+            &.btn-danger {
+              background: #dc3545;
+
+              &:hover {
+                background: #c82333;
+              }
+            }
+
+            &.btn-success {
+              background: #28a745;
+
+              &:hover {
+                background: #218838;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #28a745;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.2s;
+
+  &:hover {
+    background: #218838;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

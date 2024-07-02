@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Ingredient;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/ingredient')]
+#[Route('/admin/ingredient-index')]
 class IngredientController extends AbstractController
 {
     #[Route('/', name: 'app_ingredient_index', methods: ['GET'])]
@@ -38,7 +37,7 @@ class IngredientController extends AbstractController
 
         return $this->render('ingredient/new.html.twig', [
             'ingredient' => $ingredient,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -64,14 +63,14 @@ class IngredientController extends AbstractController
 
         return $this->render('ingredient/edit.html.twig', [
             'ingredient' => $ingredient,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_ingredient_delete', methods: ['POST'])]
     public function delete(Request $request, Ingredient $ingredient, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$ingredient->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$ingredient->getId(), $request->request->get('_token'))) {
             $entityManager->remove($ingredient);
             $entityManager->flush();
         }
@@ -79,3 +78,4 @@ class IngredientController extends AbstractController
         return $this->redirectToRoute('app_ingredient_index', [], Response::HTTP_SEE_OTHER);
     }
 }
+

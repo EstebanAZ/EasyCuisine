@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  font-family: "Roboto", sans-serif;
+}
+
+.login-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+}
+.login-container h1 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #333;
+  font-weight: 500;
+}
+.login-container .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-container .form-group .form-control {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+.login-container .form-group .form-control:focus {
+  border-color: #ff7e5f;
+  outline: none;
+}
+.login-container .form-group .btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background: #ff7e5f;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+.login-container .form-group .btn:hover {
+  background: #feb47b;
+  transform: translateY(-2px);
+}
+.login-container .form-group .btn:active {
+  transform: translateY(0);
+}
+.login-container .form-group .alert {
+  margin-bottom: 1rem;
+  color: #d9534f;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*# sourceMappingURL=login.css.map */

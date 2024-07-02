@@ -20,6 +20,7 @@ class IngredientType extends AbstractType
                 'class' => Recipe::class,
 'choice_label' => 'id',
 'multiple' => true,
+'required' => false,
             ])
         ;
     }
