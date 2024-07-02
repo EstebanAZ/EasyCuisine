@@ -2,27 +2,32 @@
 
 namespace App\Entity;
 
-use App\Repository\AuthorRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ORM\Entity(repositoryClass: AuthorRepository::class)]
-class Author
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     /**
      * @var Collection<int, Recipe>
@@ -33,9 +38,9 @@ class Author
     public function __construct()
     {
         $this->recipes = new ArrayCollection();
+        // Initialize roles with an empty array
+        $this->roles = [];
     }
-
-    // Getters and setters
 
     public function getId(): ?int
     {
@@ -47,10 +52,9 @@ class Author
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -59,10 +63,9 @@ class Author
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -71,10 +74,20 @@ class Author
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+        return $this;
+    }
 
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
         return $this;
     }
 
@@ -86,17 +99,17 @@ class Author
         return $this->recipes;
     }
 
-    public function addRecipe(Recipe $recipe): static
+    public function addRecipe(Recipe $recipe): self
     {
         if (!$this->recipes->contains($recipe)) {
-            $this->recipes->add($recipe);
+            $this->recipes[] = $recipe;
             $recipe->setAuthor($this);
         }
 
         return $this;
     }
 
-    public function removeRecipe(Recipe $recipe): static
+    public function removeRecipe(Recipe $recipe): self
     {
         if ($this->recipes->removeElement($recipe)) {
             // set the owning side to null (unless already changed)
@@ -106,5 +119,24 @@ class Author
         }
 
         return $this;
+    }
+
+    // Symfony UserInterface methods
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getSalt(): ?string
+    {
+        // Not needed when using bcrypt or argon2i
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // Example: $this->plainPassword = null;
     }
 }

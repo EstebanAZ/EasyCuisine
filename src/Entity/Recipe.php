@@ -1,11 +1,12 @@
 <?php
 
+// src/Entity/Recipe.php
+
 namespace App\Entity;
 
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
@@ -19,15 +20,14 @@ class Recipe
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: 'text')]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::JSON)] // Adjusted type to JSON for images
+    #[ORM\Column(type: 'array')]
     private array $images = [];
 
-    #[ORM\ManyToOne(targetEntity: Author::class, inversedBy: 'recipes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Author $author = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'recipes')]
+    private ?User $author = null;
 
     /**
      * @var Collection<int, Ingredient>
@@ -39,8 +39,6 @@ class Recipe
     {
         $this->ingredients = new ArrayCollection();
     }
-
-    // Getters and setters
 
     public function getId(): ?int
     {
@@ -83,12 +81,12 @@ class Recipe
         return $this;
     }
 
-    public function getAuthor(): ?Author
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
 
-    public function setAuthor(?Author $author): static
+    public function setAuthor(?User $author): static
     {
         $this->author = $author;
 
@@ -107,6 +105,7 @@ class Recipe
     {
         if (!$this->ingredients->contains($ingredient)) {
             $this->ingredients->add($ingredient);
+            $ingredient->addRecipe($this);
         }
 
         return $this;
@@ -114,7 +113,9 @@ class Recipe
 
     public function removeIngredient(Ingredient $ingredient): static
     {
-        $this->ingredients->removeElement($ingredient);
+        if ($this->ingredients->removeElement($ingredient)) {
+            $ingredient->removeRecipe($this);
+        }
 
         return $this;
     }
